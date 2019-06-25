@@ -3,7 +3,11 @@ package org.unitec.califitec
 import android.app.Activity
 import android.content.Context
 import android.os.AsyncTask
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Retrofit
+import retrofit2.converter.jackson.JacksonConverterFactory
+import retrofit2.create
 
 class TareaAutenticarAlumno(var ctx: Context?, var activity: MainActivity?):
 AsyncTask<Void,Void,Void>(){
@@ -24,6 +28,17 @@ AsyncTask<Void,Void,Void>(){
    // Aqui vamos a preparar nuestro objeto alumno que ya tenemos para enviar a
     // El back-end
     //Aqui usaremos la bibloteca REtrofir que es muy iportante
+
+    var retrofit= Retrofit.Builder()
+        .baseUrl("https://topoyiyo-1903.herokuapp.com/")
+        .addConverterFactory(JacksonConverterFactory.create())
+        .build()
+
+    var servicioAlumno=retrofit.create(ServicioAlumno::class.java)
+    var envio=servicioAlumno.autenticar(alumno)
+    alumno=envio.execute().body()!!
+
+
 return null
 
     }
@@ -33,5 +48,7 @@ return null
     //navegacion hacia otra pagina
     override fun onPostExecute(result: Void?) {
         super.onPostExecute(result)
+
+       Toast.makeText(ctx, "Estatus del alumno ${alumno.autenticado}", Toast.LENGTH_LONG).show()
     }
 }
