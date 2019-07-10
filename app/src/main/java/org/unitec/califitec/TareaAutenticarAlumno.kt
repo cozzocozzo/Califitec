@@ -2,6 +2,7 @@ package org.unitec.califitec
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.AsyncTask
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -49,6 +50,10 @@ return null
     override fun onPostExecute(result: Void?) {
         super.onPostExecute(result)
 
-       Toast.makeText(ctx, "Estatus del alumno ${alumno.autenticado}", Toast.LENGTH_LONG).show()
+       if(alumno.autenticado!!){
+           var i= Intent(ctx, ConfiguracionActivity::class.java)
+           activity?.startActivity(i)
+       }
+       else Toast.makeText(ctx, "Datos incorrectos", Toast.LENGTH_LONG).show()
     }
 }
